@@ -1,10 +1,8 @@
 package com.example.luxurycarbackend.car.controller;
 
-import com.example.luxurycarbackend.car.dto.CarRequest;
-import com.example.luxurycarbackend.car.dto.CarResponse;
+import com.example.luxurycarbackend.car.entity.CarEntity;
 import com.example.luxurycarbackend.car.service.CarService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,61 +18,72 @@ public class CarController {
     private final CarService carService;
 
     @GetMapping
-    public ResponseEntity<List<CarResponse>> getAllCars() {
-        List<CarResponse> cars = carService.getAllCars();
+    public ResponseEntity<List<CarEntity>> getAllCars() {
+        List<CarEntity> cars = carService.getAllCars();
         return ResponseEntity.ok(cars);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CarResponse> getCarById(@PathVariable Long id) {
-        CarResponse car = carService.getCarById(id);
-        return ResponseEntity.ok(car);
+    public ResponseEntity<CarEntity> getCarById(@PathVariable Long id) {
+        return carService.getCarById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/brand/{brandId}")
-    public ResponseEntity<List<CarResponse>> getCarsByBrandId(@PathVariable Long brandId) {
-        List<CarResponse> cars = carService.getCarsByBrandId(brandId);
+    public ResponseEntity<List<CarEntity>> getCarsByBrandId(@PathVariable Long brandId) {
+        List<CarEntity> cars = carService.getCarsByBrandId(brandId);
         return ResponseEntity.ok(cars);
     }
 
     @GetMapping("/brand/name/{brandName}")
-    public ResponseEntity<List<CarResponse>> getCarsByBrandName(@PathVariable String brandName) {
-        List<CarResponse> cars = carService.getCarsByBrandName(brandName);
+    public ResponseEntity<List<CarEntity>> getCarsByBrandName(@PathVariable String brandName) {
+        List<CarEntity> cars = carService.getCarsByBrandName(brandName);
         return ResponseEntity.ok(cars);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CarResponse>> searchCarsByModel(@RequestParam String model) {
-        List<CarResponse> cars = carService.searchCarsByModel(model);
+    public ResponseEntity<List<CarEntity>> searchCarsByModel(@RequestParam String model) {
+        List<CarEntity> cars = carService.searchCarsByModel(model);
         return ResponseEntity.ok(cars);
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<List<CarResponse>> filterCars(
-            @RequestParam(required = false) String model,
-            @RequestParam(required = false) Long brandId,
-            @RequestParam(required = false) Integer minYear,
-            @RequestParam(required = false) Integer maxYear,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice
-    ) {
-        List<CarResponse> cars = carService.filterCars(model, brandId, minYear, maxYear, minPrice, maxPrice);
+    @GetMapping("/price")
+    public ResponseEntity<List<CarEntity>> getCarsByPriceRange(
+            @RequestParam BigDecimal minPrice,
+            @RequestParam BigDecimal maxPrice) {
+        List<CarEntity> cars = carService.getCarsByPriceRange(minPrice, maxPrice);
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/year/{year}")
+    public ResponseEntity<List<CarEntity>> getCarsByYear(@PathVariable Integer year) {
+        List<CarEntity> cars = carService.getCarsByYear(year);
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/fuel/{fuelType}")
+    public ResponseEntity<List<CarEntity>> getCarsByFuelType(@PathVariable String fuelType) {
+        List<CarEntity> cars = carService.getCarsByFuelType(fuelType);
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/body/{bodyType}")
+    public ResponseEntity<List<CarEntity>> getCarsByBodyType(@PathVariable String bodyType) {
+        List<CarEntity> cars = carService.getCarsByBodyType(bodyType);
+        return ResponseEntity.ok(cars);
+    }
+
+    @GetMapping("/limited")
+    public ResponseEntity<List<CarEntity>> getLimitedEditionCars() {
+        List<CarEntity> cars = carService.getLimitedEditionCars();
         return ResponseEntity.ok(cars);
     }
 
     @PostMapping
-    public ResponseEntity<CarResponse> createCar(@RequestBody CarRequest carRequest) {
-        CarResponse createdCar = carService.createCar(carRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCar);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<CarResponse> updateCar(
-            @PathVariable Long id,
-            @RequestBody CarRequest carRequest
-    ) {
-        CarResponse updatedCar = carService.updateCar(id, carRequest);
-        return ResponseEntity.ok(updatedCar);
+    public ResponseEntity<CarEntity> createCar(@RequestBody CarEntity car) {
+        CarEntity createdCar = carService.saveCar(car);
+        return ResponseEntity.ok(createdCar);
     }
 
     @DeleteMapping("/{id}")

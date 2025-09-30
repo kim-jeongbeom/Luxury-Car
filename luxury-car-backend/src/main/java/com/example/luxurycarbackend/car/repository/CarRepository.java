@@ -28,6 +28,10 @@ public interface CarRepository extends JpaRepository<CarEntity, Long> {
 
     List<CarEntity> findByIsLimitedEdition(Boolean isLimitedEdition);
 
+    List<CarEntity> findByModelYear(Integer year);
+
+    List<CarEntity> findByBodyType(String bodyType);
+
     @Query("SELECT c FROM CarEntity c WHERE " +
            "(:model IS NULL OR LOWER(c.model) LIKE LOWER(CONCAT('%', :model, '%'))) AND " +
            "(:brandId IS NULL OR c.brand.id = :brandId) AND " +

@@ -2,10 +2,13 @@ package com.example.luxurycarbackend.config;
 
 import com.example.luxurycarbackend.brand.entity.BrandEntity;
 import com.example.luxurycarbackend.brand.repository.BrandRepository;
+import com.example.luxurycarbackend.car.entity.CarEntity;
+import com.example.luxurycarbackend.car.repository.CarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,11 +17,15 @@ import java.util.List;
 public class DataLoader implements CommandLineRunner {
 
     private final BrandRepository brandRepository;
+    private final CarRepository carRepository;
 
     @Override
     public void run(String... args) throws Exception {
         if (brandRepository.count() == 0) {
             loadInitialBrands();
+        }
+        if (carRepository.count() == 0) {
+            loadInitialCars();
         }
     }
 
@@ -168,5 +175,159 @@ public class DataLoader implements CommandLineRunner {
 
         brandRepository.saveAll(brands);
         System.out.println("초기 브랜드 데이터 " + brands.size() + "개가 성공적으로 로드되었습니다.");
+    }
+
+    private void loadInitialCars() {
+        // 브랜드들을 먼저 조회
+        BrandEntity ferrari = brandRepository.findByName("Ferrari").orElse(null);
+        BrandEntity bmw = brandRepository.findByName("BMW").orElse(null);
+        BrandEntity porsche = brandRepository.findByName("Porsche").orElse(null);
+
+        if (ferrari == null || bmw == null || porsche == null) {
+            System.out.println("브랜드 데이터가 없어서 자동차 데이터를 로드할 수 없습니다.");
+            return;
+        }
+
+        List<CarEntity> cars = Arrays.asList(
+            // Ferrari 자동차들
+            CarEntity.builder()
+                .brand(ferrari)
+                .model("F8 Tributo")
+                .modelYear(2023)
+                .price(new BigDecimal("280000"))
+                .priceCurrency("USD")
+                .engine("3.9L Twin-Turbo V8")
+                .horsepower(710)
+                .zeroToHundred(new BigDecimal("2.9"))
+                .maxSpeed(340)
+                .fuelType("가솔린")
+                .driveType("RWD")
+                .transmission("7단 DCT")
+                .color("로소 코르사")
+                .seats(2)
+                .doors(2)
+                .bodyType("쿠페")
+                .description("페라리의 대표적인 미드엔진 V8 슈퍼카로, 순수한 드라이빙 퍼포먼스를 추구합니다.")
+                .imageUrl("https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&h=400&fit=crop")
+                .isLimitedEdition(false)
+                .build(),
+
+            CarEntity.builder()
+                .brand(ferrari)
+                .model("LaFerrari")
+                .modelYear(2022)
+                .price(new BigDecimal("1500000"))
+                .priceCurrency("USD")
+                .engine("6.3L V12 + 전기모터")
+                .horsepower(950)
+                .zeroToHundred(new BigDecimal("2.4"))
+                .maxSpeed(370)
+                .fuelType("하이브리드")
+                .driveType("RWD")
+                .transmission("7단 DCT")
+                .color("옐로우 모데나")
+                .seats(2)
+                .doors(2)
+                .bodyType("쿠페")
+                .description("페라리의 플래그십 하이퍼카로, 최첨단 하이브리드 기술과 F1 기술이 집약되었습니다.")
+                .imageUrl("https://images.unsplash.com/photo-1544829099-b9a0c5303bea?w=600&h=400&fit=crop")
+                .isLimitedEdition(true)
+                .productionCount(499)
+                .build(),
+
+            CarEntity.builder()
+                .brand(ferrari)
+                .model("296 GTB")
+                .modelYear(2023)
+                .price(new BigDecimal("320000"))
+                .priceCurrency("USD")
+                .engine("2.9L Twin-Turbo V6 + 전기모터")
+                .horsepower(830)
+                .zeroToHundred(new BigDecimal("2.9"))
+                .maxSpeed(330)
+                .fuelType("하이브리드")
+                .driveType("RWD")
+                .transmission("8단 DCT")
+                .color("블루 코르사")
+                .seats(2)
+                .doors(2)
+                .bodyType("쿠페")
+                .description("페라리 최초의 V6 하이브리드 베를리네타로, 새로운 시대의 페라리를 대표합니다.")
+                .imageUrl("https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&h=400&fit=crop")
+                .isLimitedEdition(false)
+                .build(),
+
+            // BMW 자동차들
+            CarEntity.builder()
+                .brand(bmw)
+                .model("M3 Competition")
+                .modelYear(2023)
+                .price(new BigDecimal("85000"))
+                .priceCurrency("USD")
+                .engine("3.0L Twin-Turbo I6")
+                .horsepower(510)
+                .zeroToHundred(new BigDecimal("3.8"))
+                .maxSpeed(290)
+                .fuelType("가솔린")
+                .driveType("RWD")
+                .transmission("8단 자동")
+                .color("알파인 화이트")
+                .seats(5)
+                .doors(4)
+                .bodyType("세단")
+                .description("BMW M의 정수가 담긴 고성능 스포츠 세단으로, 트랙과 일상 모두에서 완벽한 성능을 제공합니다.")
+                .imageUrl("https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop")
+                .isLimitedEdition(false)
+                .build(),
+
+            CarEntity.builder()
+                .brand(bmw)
+                .model("i8")
+                .modelYear(2022)
+                .price(new BigDecimal("150000"))
+                .priceCurrency("USD")
+                .engine("1.5L Turbo I3 + 전기모터")
+                .horsepower(374)
+                .zeroToHundred(new BigDecimal("4.4"))
+                .maxSpeed(250)
+                .fuelType("하이브리드")
+                .driveType("AWD")
+                .transmission("6단 자동")
+                .color("크리스탈 화이트")
+                .seats(2)
+                .doors(2)
+                .bodyType("쿠페")
+                .description("BMW의 미래 지향적 하이브리드 스포츠카로, 혁신적인 디자인과 친환경 기술을 결합했습니다.")
+                .imageUrl("https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&h=400&fit=crop")
+                .isLimitedEdition(true)
+                .productionCount(20448)
+                .build(),
+
+            // Porsche 자동차들
+            CarEntity.builder()
+                .brand(porsche)
+                .model("911 Turbo S")
+                .modelYear(2023)
+                .price(new BigDecimal("230000"))
+                .priceCurrency("USD")
+                .engine("3.8L Twin-Turbo Flat-6")
+                .horsepower(650)
+                .zeroToHundred(new BigDecimal("2.6"))
+                .maxSpeed(330)
+                .fuelType("가솔린")
+                .driveType("AWD")
+                .transmission("8단 PDK")
+                .color("가드 레드")
+                .seats(4)
+                .doors(2)
+                .bodyType("쿠페")
+                .description("포르쉐 911의 최고 성능 버전으로, 완벽한 균형과 절대적인 성능을 자랑합니다.")
+                .imageUrl("https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=400&fit=crop")
+                .isLimitedEdition(false)
+                .build()
+        );
+
+        carRepository.saveAll(cars);
+        System.out.println("초기 자동차 데이터 " + cars.size() + "개가 성공적으로 로드되었습니다.");
     }
 }

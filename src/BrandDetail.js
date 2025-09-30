@@ -1,154 +1,50 @@
 import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Car, Calendar, Zap, Gauge, DollarSign, Fuel } from 'lucide-react';
+import { brandService, carService } from './services/api';
 
-// 샘플 자동차 데이터
-const sampleCars = {
-  Ferrari: [
-    {
-      id: 1,
-      model: 'F8 Tributo',
-      year: 2023,
-      price: 280000,
-      currency: 'USD',
-      engine: '3.9L Twin-Turbo V8',
-      horsepower: 710,
-      zeroToHundred: 2.9,
-      maxSpeed: 340,
-      fuelType: '가솔린',
-      driveType: 'RWD',
-      transmission: '7단 DCT',
-      color: '로소 코르사',
-      seats: 2,
-      doors: 2,
-      bodyType: '쿠페',
-      description: '페라리의 대표적인 미드엔진 V8 슈퍼카로, 순수한 드라이빙 퍼포먼스를 추구합니다.',
-      imageUrl: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&h=400&fit=crop'
-    },
-    {
-      id: 2,
-      model: 'LaFerrari',
-      year: 2022,
-      price: 1500000,
-      currency: 'USD',
-      engine: '6.3L V12 + 전기모터',
-      horsepower: 950,
-      zeroToHundred: 2.4,
-      maxSpeed: 370,
-      fuelType: '하이브리드',
-      driveType: 'RWD',
-      transmission: '7단 DCT',
-      color: '옐로우 모데나',
-      seats: 2,
-      doors: 2,
-      bodyType: '쿠페',
-      description: '페라리의 플래그십 하이퍼카로, 최첨단 하이브리드 기술과 F1 기술이 집약되었습니다.',
-      imageUrl: 'https://images.unsplash.com/photo-1544829099-b9a0c5303bea?w=600&h=400&fit=crop'
-    },
-    {
-      id: 3,
-      model: '296 GTB',
-      year: 2023,
-      price: 320000,
-      currency: 'USD',
-      engine: '2.9L Twin-Turbo V6 + 전기모터',
-      horsepower: 830,
-      zeroToHundred: 2.9,
-      maxSpeed: 330,
-      fuelType: '하이브리드',
-      driveType: 'RWD',
-      transmission: '8단 DCT',
-      color: '블루 코르사',
-      seats: 2,
-      doors: 2,
-      bodyType: '쿠페',
-      description: '페라리 최초의 V6 하이브리드 베를리네타로, 새로운 시대의 페라리를 대표합니다.',
-      imageUrl: 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=600&h=400&fit=crop'
-    }
-  ],
-  BMW: [
-    {
-      id: 4,
-      model: 'M3 Competition',
-      year: 2023,
-      price: 85000,
-      currency: 'USD',
-      engine: '3.0L Twin-Turbo I6',
-      horsepower: 510,
-      zeroToHundred: 3.8,
-      maxSpeed: 290,
-      fuelType: '가솔린',
-      driveType: 'RWD',
-      transmission: '8단 자동',
-      color: '알파인 화이트',
-      seats: 5,
-      doors: 4,
-      bodyType: '세단',
-      description: 'BMW M의 정수가 담긴 고성능 스포츠 세단으로, 트랙과 일상 모두에서 완벽한 성능을 제공합니다.',
-      imageUrl: 'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=400&fit=crop'
-    },
-    {
-      id: 5,
-      model: 'i8',
-      year: 2022,
-      price: 150000,
-      currency: 'USD',
-      engine: '1.5L Turbo I3 + 전기모터',
-      horsepower: 374,
-      zeroToHundred: 4.4,
-      maxSpeed: 250,
-      fuelType: '하이브리드',
-      driveType: 'AWD',
-      transmission: '6단 자동',
-      color: '크리스탈 화이트',
-      seats: 2,
-      doors: 2,
-      bodyType: '쿠페',
-      description: 'BMW의 미래 지향적 하이브리드 스포츠카로, 혁신적인 디자인과 친환경 기술을 결합했습니다.',
-      imageUrl: 'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&h=400&fit=crop'
-    }
-  ],
-  Porsche: [
-    {
-      id: 6,
-      model: '911 Turbo S',
-      year: 2023,
-      price: 230000,
-      currency: 'USD',
-      engine: '3.8L Twin-Turbo Flat-6',
-      horsepower: 650,
-      zeroToHundred: 2.6,
-      maxSpeed: 330,
-      fuelType: '가솔린',
-      driveType: 'AWD',
-      transmission: '8단 PDK',
-      color: '가드 레드',
-      seats: 4,
-      doors: 2,
-      bodyType: '쿠페',
-      description: '포르쉐 911의 최고 성능 버전으로, 완벽한 균형과 절대적인 성능을 자랑합니다.',
-      imageUrl: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=400&fit=crop'
-    }
-  ]
-};
-
-function BrandDetail({ brand, onBack }) {
+function BrandDetail() {
+  const { brandName } = useParams();
+  const navigate = useNavigate();
+  const [brand, setBrand] = useState(null);
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // 샘플 데이터 로드 (실제로는 API 호출)
-    const loadCars = () => {
-      setLoading(true);
-      setTimeout(() => {
-        setCars(sampleCars[brand?.name] || []);
+    const loadBrandAndCars = async () => {
+      try {
+        setLoading(true);
+
+        // 모든 브랜드를 가져와서 URL의 브랜드명과 매칭
+        const brands = await brandService.getAllBrands();
+        const foundBrand = brands.find(
+          b => b.name.toLowerCase() === brandName.toLowerCase()
+        );
+
+        if (!foundBrand) {
+          navigate('/');
+          return;
+        }
+
+        setBrand(foundBrand);
+
+        // 해당 브랜드의 자동차 데이터 로드
+        const carData = await carService.getCarsByBrandId(foundBrand.id);
+        setCars(carData);
+      } catch (err) {
+        console.error('데이터 로드 실패:', err);
+        setCars([]);
+      } finally {
         setLoading(false);
-      }, 500);
+      }
     };
 
-    if (brand) {
-      loadCars();
-    }
-  }, [brand]);
+    loadBrandAndCars();
+  }, [brandName, navigate]);
+
+  const handleBack = () => {
+    navigate('/');
+  };
 
   if (!brand) return null;
 
@@ -159,7 +55,7 @@ function BrandDetail({ brand, onBack }) {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center space-x-4">
             <button
-              onClick={onBack}
+              onClick={handleBack}
               className="flex items-center space-x-2 text-gold-400 hover:text-gold-300 transition-colors"
             >
               <ArrowLeft className="h-5 w-5" />
@@ -234,7 +130,7 @@ function BrandDetail({ brand, onBack }) {
                   />
                   <div className="absolute top-4 right-4">
                     <span className="px-3 py-1 rounded-full text-xs font-medium bg-black/60 text-white">
-                      {car.year}
+                      {car.modelYear}
                     </span>
                   </div>
                 </div>
@@ -245,7 +141,7 @@ function BrandDetail({ brand, onBack }) {
                       {car.model}
                     </h4>
                     <p className="text-gold-400 font-medium">
-                      ${car.price.toLocaleString()} {car.currency}
+                      ${car.price?.toLocaleString()} {car.priceCurrency}
                     </p>
                   </div>
 
