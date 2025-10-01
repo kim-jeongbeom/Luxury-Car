@@ -1,6 +1,7 @@
 package com.example.luxurycarbackend.car.entity;
 
 import com.example.luxurycarbackend.brand.entity.BrandEntity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -70,6 +71,7 @@ public class CarEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private BrandEntity brand;
 
     @Column(name = "created_at")

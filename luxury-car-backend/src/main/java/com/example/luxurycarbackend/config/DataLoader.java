@@ -24,9 +24,10 @@ public class DataLoader implements CommandLineRunner {
         if (brandRepository.count() == 0) {
             loadInitialBrands();
         }
-        if (carRepository.count() == 0) {
-            loadInitialCars();
-        }
+        // 자동차 초기 데이터 로드 비활성화 (수동 등록만 사용)
+        // if (carRepository.count() == 0) {
+        //     loadInitialCars();
+        // }
     }
 
     private void loadInitialBrands() {
@@ -38,7 +39,7 @@ public class DataLoader implements CommandLineRunner {
                 .country("이탈리아")
                 .category("스포츠카")
                 .description("이탈리아의 전설적인 스포츠카 브랜드로, 레이싱의 열정과 최고급 성능을 자랑합니다.")
-                .representative("F8 Tributo, LaFerrari")
+                .representative("296 GTB, Roma, SF90 Stradale")
                 .image("/Logos/Ferrari.svg")
                 .build(),
             BrandEntity.builder()
@@ -48,7 +49,7 @@ public class DataLoader implements CommandLineRunner {
                 .country("이탈리아")
                 .category("스포츠카")
                 .description("황소 로고로 유명한 이탈리아 슈퍼카 브랜드, 공격적인 디자인과 강력한 성능으로 유명합니다.")
-                .representative("Huracán, Aventador")
+                .representative("Revuelto, Huracán Tecnica, Urus Performante")
                 .image("/Logos/Lamborghini.svg")
                 .build(),
             BrandEntity.builder()
@@ -58,7 +59,7 @@ public class DataLoader implements CommandLineRunner {
                 .country("영국")
                 .category("럭셔리")
                 .description("영국 왕실이 사랑하는 최고급 럭셔리카 브랜드, 수작업으로 제작되는 극상의 품질을 자랑합니다.")
-                .representative("Phantom, Ghost")
+                .representative("Phantom, Ghost, Cullinan")
                 .image("/Logos/ROLLS-ROYCE.svg")
                 .build(),
             BrandEntity.builder()
@@ -68,7 +69,7 @@ public class DataLoader implements CommandLineRunner {
                 .country("영국")
                 .category("럭셔리")
                 .description("영국의 프리미엄 럭셔리 브랜드로, 전통적인 장인정신과 현대적 기술의 완벽한 조화를 보여줍니다.")
-                .representative("Continental GT, Bentayga")
+                .representative("Continental GT Speed, Flying Spur, Bentayga EWB")
                 .image("/Logos/Bentley.svg")
                 .build(),
             BrandEntity.builder()
@@ -78,7 +79,7 @@ public class DataLoader implements CommandLineRunner {
                 .country("영국")
                 .category("스포츠카")
                 .description("F1에서 검증된 기술력으로 제작되는 영국의 슈퍼카 브랜드, 혁신적인 엔지니어링이 특징입니다.")
-                .representative("720S, P1")
+                .representative("750S, Artura, GT")
                 .image("/Logos/McLaren.svg")
                 .build(),
             BrandEntity.builder()
@@ -88,7 +89,7 @@ public class DataLoader implements CommandLineRunner {
                 .country("독일")
                 .category("스포츠카")
                 .description("독일의 대표적인 스포츠카 브랜드로, 911 시리즈로 유명하며 정밀한 독일 엔지니어링의 대명사입니다.")
-                .representative("911, Cayenne")
+                .representative("911 Turbo S, 718 Cayman GT4 RS, Taycan Turbo S")
                 .image("/Logos/Porsche.svg")
                 .build(),
             BrandEntity.builder()
@@ -98,7 +99,7 @@ public class DataLoader implements CommandLineRunner {
                 .country("영국")
                 .category("럭셔리")
                 .description("1913년 설립된 영국의 프리미엄 스포츠카 브랜드로, 제임스 본드 시리즈와 F1 레이싱으로 유명한 럭셔리 자동차 제조사입니다.")
-                .representative("DB11, DBX, 밴티지")
+                .representative("DB12, DBX707, Vantage")
                 .image("/Logos/Aston Martin.svg")
                 .build(),
             BrandEntity.builder()
@@ -108,7 +109,7 @@ public class DataLoader implements CommandLineRunner {
                 .country("독일")
                 .category("럭셔리")
                 .description("독일의 대표적인 프리미엄 자동차 브랜드로, AMG 라인으로 스포츠카 영역까지 아우르는 종합 럭셔리 브랜드입니다.")
-                .representative("S-Class, AMG GT, G-Wagon")
+                .representative("AMG GT Coupe, SLS AMG, CLS 450 4MATIC Coupe")
                 .image("/Logos/Benz.svg")
                 .build(),
             BrandEntity.builder()

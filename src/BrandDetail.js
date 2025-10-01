@@ -71,7 +71,7 @@ function BrandDetail() {
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 py-16">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center space-y-8 md:space-y-0 md:space-x-12">
-            <div className="w-32 h-32 bg-white/10 rounded-2xl flex items-center justify-center">
+            <div className="w-48 h-48 flex items-center justify-center">
               <img
                 src={brand.image}
                 alt={brand.name}
@@ -122,7 +122,7 @@ function BrandDetail() {
                 key={car.id}
                 className="bg-gray-900/60 backdrop-blur-md rounded-2xl overflow-hidden border border-gray-700/50 hover:border-gold-400/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-gold-400/20 group"
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-72 overflow-hidden bg-gray-800">
                   <img
                     src={car.imageUrl}
                     alt={car.model}
