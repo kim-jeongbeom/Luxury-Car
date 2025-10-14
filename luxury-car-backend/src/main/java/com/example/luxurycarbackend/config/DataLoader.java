@@ -100,7 +100,7 @@ public class DataLoader implements CommandLineRunner {
                 .category("럭셔리")
                 .description("1913년 설립된 영국의 프리미엄 스포츠카 브랜드로, 제임스 본드 시리즈와 F1 레이싱으로 유명한 럭셔리 자동차 제조사입니다.")
                 .representative("DB12, DBX707, Vantage")
-                .image("/Logos/Aston Martin.png")
+                .image("/Logos/Aston Martin.webp")
                 .build(),
             BrandEntity.builder()
                 .name("Mercedes-Benz")
