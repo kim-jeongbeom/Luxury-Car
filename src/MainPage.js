@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Car, Globe, Calendar } from 'lucide-react';
 import { brandService } from './services/api';
+import Header from './components/Header';
 
 function MainPage() {
   const navigate = useNavigate();
@@ -63,32 +64,24 @@ function MainPage() {
     <div className="min-h-screen bg-black">
       <div className="hero-gradient min-h-screen relative overflow-hidden">
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-30"
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&h=1080&fit=crop)'
+            backgroundImage: 'url(/Logos/background.jpg)',
+            filter: 'brightness(0.4)'
           }}
         />
 
-        <nav className="sticky top-0 z-50 bg-black/80 backdrop-blur-md">
-          <div className="container mx-auto px-6 py-4">
-            <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold gradient-text">Luxury Cars</h1>
-              <div className="flex items-center space-x-6">
-                <Car className="h-6 w-6 text-gold-400" />
-                <span className="text-gold-400 font-medium">Premium Collection</span>
-              </div>
-            </div>
-          </div>
-        </nav>
+        <Header />
 
         <div className="relative z-10 container mx-auto px-6 py-20">
           <div className="text-center mb-16 animate-fade-in">
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 gradient-text animate-slide-up">
-              LUXURY
-            </h1>
-            <h2 className="text-4xl md:text-6xl font-light mb-8 text-white">
-              SPORTS CAR BRANDS
-            </h2>
+            <div className="flex justify-center mb-8 animate-slide-up">
+              <img
+                src="/Logos/autoverse_main2.png"
+                alt="AUTO VERSE"
+                className="w-3/4 md:w-2/3 lg:w-1/2 h-auto object-contain"
+              />
+            </div>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
               세계 최고급 스포츠카와 럭셔리카 브랜드들의 특별한 컬렉션을 만나보세요
             </p>
@@ -218,7 +211,7 @@ function MainPage() {
       <footer className="bg-gray-900 border-t border-gray-800">
         <div className="container mx-auto px-6 py-8">
           <div className="text-center">
-            <h3 className="text-2xl font-bold gradient-text mb-2">Luxury Car Brands</h3>
+            <h3 className="text-2xl font-bold gradient-text mb-2">AutoVerse</h3>
             <p className="text-gray-400">세계 최고급 자동차 브랜드 컬렉션</p>
           </div>
         </div>

@@ -1,5 +1,38 @@
 const API_BASE_URL = 'http://localhost:8080/api';
 
+// Auth API functions
+export const authService = {
+  login: async (credentials) => {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials),
+    });
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Failed to login');
+    }
+    return response.json();
+  },
+
+  signup: async (userData) => {
+    const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    });
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(error || 'Failed to signup');
+    }
+    return response.json();
+  }
+};
+
 // Brand API functions
 export const brandService = {
   getAllBrands: async () => {

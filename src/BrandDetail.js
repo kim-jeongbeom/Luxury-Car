@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Car, Calendar, Zap, Gauge, DollarSign, Fuel } from 'lucide-react';
 import { brandService, carService } from './services/api';
+import Header from './components/Header';
 
 function BrandDetail() {
   const { brandName } = useParams();
@@ -50,9 +51,11 @@ function BrandDetail() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <nav className="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-gray-800">
-        <div className="container mx-auto px-6 py-4">
+      <Header />
+
+      {/* Sub Navigation */}
+      <div className="bg-black/90 border-b border-gray-800 py-4">
+        <div className="container mx-auto px-6">
           <div className="flex items-center space-x-4">
             <button
               onClick={handleBack}
@@ -65,7 +68,7 @@ function BrandDetail() {
             <h1 className="text-xl font-bold text-white">{brand.name} 컬렉션</h1>
           </div>
         </div>
-      </nav>
+      </div>
 
       {/* Brand Info */}
       <div className="bg-gradient-to-r from-gray-900 to-gray-800 py-16">
